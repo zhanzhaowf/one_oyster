@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>One Oyster</title>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/leaflet.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand page-scroll" href="#page-top">
+					<span class="title">ONE OYSTER</span>
+				</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a class="page-scroll" href="#about">Introduction</a></li>
+				<li><a class="page-scroll" href="#stations">Stations</a></li>
+				<li><a class="page-scroll" href="#od-pairs">OD Pairs</a></li>
+				<li><a class="page-scroll" href="#sequences">Travel Sequences</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- About -->
+	<section id="about" class="container content-section">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h2>Introduction</h2>
+				<p>The availability of automated data sources, such as transit smartcard data, enables us to zoom in to the individual level, and examine how individual user travels through the transportation system over time. This project explores the use of data visualization to help public transit agencies and transportation planners understand individual travel behavior and engage passengers.</p>
+				<p>The data used in this project is Oyster card records of an anonymous passenger in 2013, which were kindly provided by <a href="https://tfl.gov.uk">Transport for London</a>.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Key Facts -->
+	<section id="stations" class="container content-section">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h2>Stations</h2>
+				<p>All the TfL stations the user visited are shown on the map, each as a circle, although the National Rail stations are not included. The radius of the circle is proportional to the logarithm of the number of visits the user made to the station. The type of the visits can be specified as "entry", "exit" or "both".</p>
+				<p>Each station is marked with a unique color. For the top 10 stations (by number of entry visits) the colors are constant, while for the rest of the stations they are randomly generated (so every refresh will produce different colors). Nevertheless, the colors, even the randomly generated ones, are used consistently through different diagrams, making it easy for cross-reference and comparison.</p>
+				<form class="form-inline">
+					<div class="form-group">
+						<label for="ChartData">Station Visits by Type: </label>
+						<select class="form-control" id="station-type">
+							<option value="inCount">Entry</option>
+							<option value="outCount">Exit</option>
+							<option value="count">Both</option>
+						</select>
+					</div>
+				</form>
+				<div id="map"></div>
+			</div>
+		</div>
+	</section>
+
+	<!-- OD Pairs -->
+	<section id="od-pairs" class="container content-section">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h2>Origin-Destination Pairs</h2>
+				<p>The individual origin-destination matrix is visualized as a chord diagram. <b>Each station is represented as an arc, and the trips between stations as a chord.</b> An arc is characterized by a starting angle, an ending angle, an inner radius and an outter radius. The angle difference (between the starting angle and the ending angle) of the arc is proportional to the total number of entry visits the user made to the station, and the color of the arc matches the unique color assigned to each station. Each chord is a closed shape connecting two arcs with quadratic Bézier curves, showing the flows between two stations, in both directions. The angle difference of either end arc is proportional to the number of outgoing trips from the attached station to the other. The color of the chord matches the station generating more trips.</p>
+			</div>
+		</div>
+		<div id="tooltip"></div>
+		<div id="chord-holder"></div>
+	</section>
+
+	<!-- Travel Sequences -->
+	<section id="sequences" class="container content-section">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h2>Travel Sequences</h2>
+				<p>Each travel sequence is defined as the sequence of stations the user visited (both entry and exit) during a day. All the travel sequences the user made during a whole year is visualized as a sunburst sequence diagram.</p>
+				<p><b>All the variations of travel sequences can be encoded as a tree, where each node is a subsequence of stations the user visited starting from the beginning of the day.</b> For a given node, its parent node is the subsequence excluding the last visited station. For example, subsequence "A-B-C" is the parent of subsequence "A-B-C-D". Each subsequence is shown as an arc in the diagram. Its angle difference is proportional to the number of occurrences the user went through subsequence, and its color matches the unique color assigned to the last visited station in the subsequence. The arcs that are within the same angle range and have larger radiuses are its children subsequences.</p>
+			</div>
+		</div>
+		<div id="breadcrumb-holder"></div>
+		<div id="sunburst-holder"></div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container text-center">
+			<p>Copyright &copy; Zhan Zhao 2016</p>
+		</div>
+	</footer>
+
+	<!-- Load JS libraries -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/queue.min.js"></script>
+	<script src="js/underscore.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/d3.tip.js"></script>
+	<script src="js/leaflet.js"></script>
+
+	<!-- Custom visualizations -->
+	<script src="js/vis-map.js"></script>
+	<script src="js/vis-chord.js"></script>
+	<script src="js/vis-sunburst.js"></script>
+	<script src="js/renderVisualization.js"></script>
+	
+</body>
+</html>
